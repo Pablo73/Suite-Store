@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User</title>
+</head>
+<link rel="stylesheet" type="text/css" href="../style/style.css">
+<body>
+    <header>
+            <h1>Suite Store</h1>
+        <nav>
+            <ul>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="categories.html">Categories</a></li>
+                <li><a href="history.html">History</a></li>
+                <li id="adminLink" style="display: none;"><a href="user.html">User</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="container-all-data">
+        <div class="input-data">
+            <form>
+                <div class="input-home">
+                    <div>
+                        <label for="categoryName">New user admin:</label>
+                        <input type="text" id="userAdmin" name="userAdmin" autocomplete="userAdmin">
+                    </div>
+                    <div>
+                        <label for="taxCategory">Password:</label>
+                        <input type="password" id="userPassword" name="userPassword" autocomplete="userPassword">
+                    </div>
+                </div>
+                <button id="saveUser" class="insert-data">Add User Admin</button>
+            </form>
+        </div>
+        <hr class="line-between-sectors">
+        <div class="data">
+            <table id="tableUser">
+                <thead>
+                    <tr>
+                        <th>Name User</th>
+                        <th>Role</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table> 
+        </div> 
+    </div>
+    <script src="../javaScript/user.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            checkRole();
+            updateTableUser();
+            registerUserAdmin();
+        });
+    </script>
+</body>
+</html>

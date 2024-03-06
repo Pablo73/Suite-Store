@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories</title>
+</head>
+<link rel="stylesheet" type="text/css" href="../style/style.css">
+<body>
+    <header>
+            <h1>Suite Store</h1>
+        <nav>
+            <ul>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="categories.html">Categories</a></li>
+                <li><a href="history.html">History</a></li>
+                <li id="adminLink" style="display: none;"><a href="user.html">User</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="container-all-data">
+        <div class="input-data">
+            <form>
+                <div class="input-home">
+                    <div>
+                        <label for="categoryName">Category name:</label>
+                        <input type="text" id="categoryName">
+                    </div>
+                    <div>
+                        <label for="taxCategory">Tax:</label>
+                        <input type="number" id="taxCategory">
+                    </div>
+                </div>
+                <button id="saveCategory" class="insert-data">Add Category</button>
+            </form>
+        </div>
+        <hr class="line-between-sectors">
+        <div class="data">
+            <table id="tableCategory">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Code</th>
+                        <th>Tax</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table> 
+        </div> 
+    </div>
+    <script src="../javaScript/categories.js"></script>
+    <script src="../javaScript/products.js"></script>
+    <script src="../javaScript/home.js"></script>
+    <script src="../javaScript/user.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTableCategory();
+            registerCategory();
+            checkRole();
+        });
+    </script>
+</body>
+</html>

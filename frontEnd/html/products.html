@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+</head>
+<link rel="stylesheet" type="text/css" href="../style/style.css">
+<body>
+    <header>
+            <h1>Suite Store</h1>
+        <nav>
+            <ul>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="categories.html">Categories</a></li>
+                <li><a href="history.html">History</a></li>
+                <li id="adminLink" style="display: none;"><a href="user.html">User</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="container-all-data">
+        <div  class="input-data">
+            <div class="input-home">
+                <div>
+                    <label for="productName">Product name:</label>
+                    <input type="text" id="productName" class="input-field">
+                </div>
+                <div>
+                    <label for="amountProduct">Amount:</label>
+                    <input type="number" id="amountProduct" class="input-field">
+                </div>
+                <div>
+                    <label for="unitPriceProduct">Unit price:</label>
+                    <input type="number" id="unitPriceProduct" class="input-field">
+                </div>
+            </div>
+            <div class="select-product">
+                <label for="categoryProduct">Category:</label>
+                <select id="categoryProduct">
+                    <option></option>
+                </select>
+            </div>
+            <button type="button" id="saveProduct" class="insert-data">Add Product</button>
+        </div>
+        <hr class="line-between-sectors">
+        <div class="data">
+            <table id="tableProduct">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Code</th>
+                        <th>Amount</th>
+                        <th>Unit Price</th>
+                        <th>Category</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <script src="../javaScript/products.js"></script>
+    <script src="../javaScript/home.js"></script>
+    <script src="../javaScript/user.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            registerProduct();
+            updateOptionCategory();
+            updateTableProduct();
+            checkRole();
+        });
+    </script>
+</body>
+</html>

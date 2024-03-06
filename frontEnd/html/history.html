@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History</title>
+</head>
+<link rel="stylesheet" type="text/css" href="../style/style.css">
+<body>
+    <header>
+        <h1>Suite Store</h1>
+        <nav>
+            <ul>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="categories.html">Categories</a></li>
+                <li><a href="history.html">History</a></li>
+                <li id="adminLink" style="display: none;"><a href="user.html">User</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="data-table" id="historyTable">
+        <table  id="tableHistory">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Tax</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div  class="data-table" id="detailTable" style="display: none">
+        <table id="tableDetails">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Product</th>
+                    <th>Amount</th>
+                    <th>Unit Price</th>
+                    <th>Tax</th>
+                    <th>Category</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <script src="../javaScript/history.js"></script>
+    <script src="../javaScript/user.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            detailsTable();
+            checkRole();
+        });
+    </script>
+</body>
+</html>

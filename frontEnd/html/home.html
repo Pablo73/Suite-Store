@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<link rel="stylesheet" type="text/css" href="../style/style.css">
+<body>
+    <header>
+        <h1>Suite Store</h1>
+        <nav>
+            <ul>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="categories.html">Categories</a></li>
+                <li><a href="history.html">History</a></li>
+                <li id="adminLink" style="display: none;"><a href="user.html">User</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="container-all-data">
+        <div class="input-data">
+            <div class="select-home">
+                <label for="productHome">Product:</label>
+                <select id="productHome">
+                    <option></option>
+                </select>
+            </div>
+            <div class="input-home">
+                <div>
+                    <label for="amountHome">Amount:</label>
+                    <input type="number" id="amountHome" class="input-field">
+                </div>
+                <div>
+                    <label for="taxValueHome">Tax:</label>
+                    <input type="text" id="taxValueHome" class="input-field" disabled>
+                </div>
+                <div>
+                    <label for="unitPriceHome">Price:</label>
+                    <input type="text" id="unitPriceHome" class="input-field" disabled>
+                </div>
+            </div>
+            <button type="button" id="add-product-home" class="insert-data">Add Product</button>
+        </div>
+        <hr class="line-between-sectors">
+        <div class="data">
+            <table  id="tableHome">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Amount</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div class="result-data">
+                <div class="tax-home">
+                    <label for="taxHome">Tax:</label>
+                    <input type="text" id="taxHome" value="$0.00" disabled>
+                </div>
+                <div class="total-home">
+                    <label for="totalHome">Total:</label>
+                    <input type="text" id="totalHome" value="$0.00" disabled>
+                </div>
+            </div>
+            <div class="button-finish">
+                <button type="button" id="cancel-home">Cancel</button>
+                <button type="button" id="finish-home">Finish</button> 
+            </div>
+        </div>   
+    </div>
+    <script src="../javaScript/home.js"></script>
+    <script src="../javaScript/user.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            registerPurchase();
+            updateOptionProduct();
+            updateTablePurchase();
+            finishPurchase();
+            taxPriceAutomatic();
+            checkRole();
+        });
+    </script>
+</body>
+</html>
