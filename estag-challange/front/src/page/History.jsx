@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { format } from 'date-fns';
 import Header from '../components/Header/Header';
 import SuiteStoreContext from '../context/SuiteStoreContext';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +8,19 @@ function History() {
   const navigate = useNavigate();
   const columns = ['Code', 'Data', 'Tax', 'Total']
   const { allOrderData } = useContext(SuiteStoreContext) ?? { allOrderData: [] };
+
+  const formatData = (dateTimeString) => {
+    const dateTime = new Date(dateTimeString);
+    const day = dateTime.getDate().toString().padStart(2, '0');
+    const month = (dateTime.getMonth() + 1).toString().padStart(2, '0');
+    const year = dateTime.getFullYear();
+    const hours = dateTime.getHours().toString().padStart(2, '0');
+    const minutes = dateTime.getMinutes().toString().padStart(2, '0');
+
+  return `${day}/${month}/${year} ${hours}:${minutes}`;
+
+  }
+
 
   const viewButtonHistory = (order_id) => {
     navigate(`/detailsTable/${order_id}`);
@@ -29,7 +41,7 @@ function History() {
           </thead>
           <tbody>
           {allOrderData?.message?.map((row, rowIndex) => {
-            const dataFormat = format(new Date(row.order_date), 'dd/MM/yyyy HH:mm')
+            const dataFormat = formatData(row.order_date);
               return (
                 <tr key={rowIndex}>
                   <td>{rowIndex + 1}</td>
