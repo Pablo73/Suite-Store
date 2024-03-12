@@ -2,14 +2,12 @@ import React, { useContext, useState  } from 'react';
 import SuiteStoreContext from '../context/SuiteStoreContext';
 import Header from '../components/Header/Header';
 import { useNavigate, useLocation } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import { deleteData, postData } from '../utils/apiUtils';
 
 function User() {
 
-  const retrievedRole = Cookies.get('userRole');
   const token = sessionStorage.getItem('token');
   const navigate = useNavigate();
   const location = useLocation();
@@ -50,7 +48,7 @@ function User() {
 
   const handleApiResponseDelete = (response) => {
     if (response.status === 200 && response.message) {
-      window.location.reload();
+      // window.location.reload();
     } 
   };
 
@@ -82,7 +80,7 @@ function User() {
 
   return (
     <div>
-      <Header userRole={retrievedRole} />
+      <Header/>
       <div className="container-all-data">
         <div className="input-data">
             <form>

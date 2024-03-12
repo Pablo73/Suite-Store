@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './App.css'
 import { Route, Routes } from "react-router-dom";
 import ProtectedRoute  from './components/PrivateRoute';
@@ -10,12 +10,12 @@ import Login from '../src/page/Login/Login';
 import DetailsTable from './page/DetailsTable'
 import Register from '../src/page/Register/Register';
 import User from './page/User';
-import Cookies from 'js-cookie';
+import SuiteStoreContext from './context/SuiteStoreContext';
 
 
 function App() {
 
-  const retrievedRole = Cookies.get('userRole');
+  const { userRole } = useContext(SuiteStoreContext);
 
   return (
     <div>
@@ -28,7 +28,7 @@ function App() {
         <Route
           path="/category"
           element={
-            <ProtectedRoute user={retrievedRole}>
+            <ProtectedRoute user={userRole}>
               <Category />
             </ProtectedRoute>
           }
@@ -36,7 +36,7 @@ function App() {
         <Route
           path="/product"
           element={
-            <ProtectedRoute user={retrievedRole}>
+            <ProtectedRoute user={userRole}>
               <Product />
             </ProtectedRoute>
           }
@@ -44,7 +44,7 @@ function App() {
        <Route
           path="/user"
           element={
-            <ProtectedRoute user={retrievedRole}>
+            <ProtectedRoute user={userRole}>
               <User />
             </ProtectedRoute>
           }

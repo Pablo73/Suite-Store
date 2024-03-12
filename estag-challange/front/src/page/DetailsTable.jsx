@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header/Header';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import { postData } from '../utils/apiUtils';
 
 function DetailsTable() {
@@ -10,7 +9,6 @@ function DetailsTable() {
   const location = useLocation();
   const columns = ['Code', 'Product', 'Amount', 'Unit Price', 'Tax', 'Category', 'Total']
   const [allOrderItemData, setAllOrderItemData] = useState([]);
-  const retrievedRole = Cookies.get('userRole');
   const token = sessionStorage.getItem('token');
   const { id } = useParams();
 
@@ -47,7 +45,7 @@ function DetailsTable() {
  
   return (
     <div>
-      <Header userRole={retrievedRole} />
+      <Header/>
       <div className='data-table' id="historyTable">
         <table id="tableDetails">
         <thead>

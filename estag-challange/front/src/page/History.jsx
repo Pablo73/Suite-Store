@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import Header from '../components/Header/Header';
-import Cookies from 'js-cookie';
 import SuiteStoreContext from '../context/SuiteStoreContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,7 +8,6 @@ function History() {
   const navigate = useNavigate();
   const columns = ['Code', 'Tax', 'Total']
   const { allOrderData } = useContext(SuiteStoreContext) ?? { allOrderData: [] };
-  const retrievedRole = Cookies.get('userRole');
 
   const viewButtonHistory = (order_id) => {
     navigate(`/detailsTable/${order_id}`);
@@ -17,7 +15,7 @@ function History() {
 
   return (
     <div>
-      <Header userRole={retrievedRole} />
+      <Header/>
       <div className='data-table' id="historyTable">
         <table id="tableHistory">
         <thead>

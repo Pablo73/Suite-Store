@@ -6,7 +6,6 @@ import SuiteStoreContext from '../context/SuiteStoreContext';
 import SelectComponent from '../components/SelectComponent';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { deleteData, postData } from '../utils/apiUtils';
-import Cookies from 'js-cookie';
 
 
 function Product() {
@@ -14,10 +13,10 @@ function Product() {
   const navigate = useNavigate();
   const location = useLocation();
   const columns = ['Product', 'Code', 'Amount', 'Unit Price', 'Category']
-  const { productData, setProductData } = useContext(SuiteStoreContext) ?? { productData: [] };
+  const { productData } = useContext(SuiteStoreContext) ?? { productData: [] };
   const { categoryData } = useContext(SuiteStoreContext) ?? { categoryData: [] };
-  const retrievedRole = Cookies.get('userRole');
   const token = sessionStorage.getItem('token');
+  const { fetchDataAsyncOrder } = useContext(SuiteStoreContext);
 
   const [newProductData, setNewProductData] = useState({
     name : '',
@@ -33,7 +32,7 @@ function Product() {
     }));
   };
 
-  const handleButtonClickProduct = async (rowData) => {
+  const handleButtonDeleteProduct = async (rowData) => {
     try {
       const url = 'product/delete';
       const headers = { 
@@ -53,9 +52,9 @@ function Product() {
   };
 
   const handleApiResponseDelete = (response) => {
-    if (response.status === 200 && response.message && response.message.products) {
-      setProductData(response.message.products);
-      window.location.reload();
+    if (response.status === 200 && response.message) {
+      console.log(response.message)
+      fetchDataAsyncOrder();
     } 
   };
 
@@ -83,14 +82,12 @@ function Product() {
 
   const handleApiResponseNew = (response) => {
     if (response.status === 201 && response.message) {
-      window.location.reload();
+      fetchDataAsyncOrder();
     }  
   }
-  
-
   return (
     <div>
-       <Header userRole={retrievedRole} />
+       <Header/>
       <div className="container-all-data">
         <div className="input-data">
             <form>
@@ -156,7 +153,7 @@ function Product() {
                   <td>{`$${row.unit_price}`}</td>
                   <td>{row.categories_name}</td>
                   <td>
-                    <button onClick={() => handleButtonClickProduct(row)}>Delete</button>
+                    <button onClick={() => handleButtonDeleteProduct(row)}>Delete</button>
                   </td>
                 </tr>
               );

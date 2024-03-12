@@ -1,16 +1,14 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import { Link, useNavigate, useLocation   } from 'react-router-dom';
 import { postData } from '../../utils/apiUtils';
-import Cookies from 'js-cookie';
 import './Login.css'
 
 function Login() {
 
   const navigate = useNavigate();
   const location = useLocation();
-  Cookies.remove('userRole');
 
   const [loginData, setLoginData] = useState({
     name : '',

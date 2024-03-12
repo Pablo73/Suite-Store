@@ -3,7 +3,6 @@ import SuiteStoreContext from './SuiteStoreContext';
 import { fetchData } from '../utils/apiUtils';
 import { useLocation, useNavigate } from "react-router-dom";
 import { postData } from '../utils/apiUtils';
-import Cookies from 'js-cookie';
 
 
 function SuiteStoreProvider({ children }) {
@@ -17,6 +16,7 @@ function SuiteStoreProvider({ children }) {
     const [userData, setuserData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const token = sessionStorage.getItem('token');
+    const [userRole, setUserRole] = useState('');
 
     const CATEGORY_GET_ALL_URL = 'category/allCategory';
     const PRODUCT_GET_ALL_URL = 'product/allProduct';
@@ -79,7 +79,7 @@ function SuiteStoreProvider({ children }) {
       try {
         const parsedResponse = JSON.parse(response.message);
         const role = parsedResponse.role;
-        Cookies.set('userRole', role);
+        setUserRole(role);
   
       } catch (error) {
         console.error('Error parsing response:', error.message);
@@ -97,12 +97,15 @@ function SuiteStoreProvider({ children }) {
     setProductData,
     allOrderData,
     userData,
+    userRole,
+    setUserRole
   }), [
     categoryData,
     productData,
     isLoading,
     allOrderData,
     userData,
+    userRole
   ]);
 
   return (

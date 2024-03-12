@@ -1,11 +1,12 @@
 import React, { useState, useContext } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import SuiteStoreContext from '../../context/SuiteStoreContext';
 import Loading from '../../components/Loading/Loading';
 
-function Header({ userRole }) {
+function Header() {
   const { isLoading } = useContext(SuiteStoreContext);
+
+  const { setUserRole } = useContext(SuiteStoreContext);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ function Header({ userRole }) {
 
   const handleLogoff = () => {
     sessionStorage.removeItem('token');
-    Cookies.remove('userRole');
+    setUserRole('');
     navigate('/');
   }
 
@@ -27,13 +28,6 @@ function Header({ userRole }) {
       <li><NavLink to="/category">Categories</NavLink></li>
       <li><NavLink to="/history">History</NavLink></li>
       <li><NavLink to="/user">User</NavLink></li>
-    </>
-  );
-
-  const userLinks = (
-    <>
-      <li><NavLink to="/home">Home</NavLink></li>
-      <li><NavLink to="/history">History</NavLink></li>
     </>
   );
 
@@ -53,7 +47,7 @@ function Header({ userRole }) {
               <Loading/>
             ) : (
               <ul>
-                {userRole === 'admin' ? adminLinks : userLinks}
+                {adminLinks}
               </ul>
             )}
           </nav>

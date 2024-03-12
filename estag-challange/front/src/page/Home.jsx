@@ -4,7 +4,6 @@ import Input from '../components/Input';
 import Button from '../components/Button';
 import SuiteStoreContext from '../context/SuiteStoreContext';
 import SelectComponent from '../components/SelectComponent';
-import Cookies from 'js-cookie';
 import addQuantityPerProduct from '../utils/addQuantityPerProduct';
 import { postData } from '../utils/apiUtils';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -27,7 +26,6 @@ function Home() {
   const getAllPurchaset = JSON.parse(localStorage.getItem('purchase')) || [];
 
   const { productData } = useContext(SuiteStoreContext) ?? { productData: [] };
-  const retrievedRole = Cookies.get('userRole');
 
   const [newPurchasetData, setNewPurchasetData] = useState({
     amount: '',
@@ -202,7 +200,7 @@ function Home() {
 
   return (
     <div>
-      <Header userRole={retrievedRole} />
+      <Header/>
       <div className="container-all-data">
         <div className="input-data">
                 <SelectComponent

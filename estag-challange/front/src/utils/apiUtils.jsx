@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { handleResponse } from './handleResponse';
-import Cookies from 'js-cookie';
 
 const baseUrl = 'http://localhost';
 
@@ -48,7 +47,6 @@ const handleApiError = (error, navigate, location) => {
   if (error.response && error.response.status === 401) {
     alert('Invalid user or expired token.');
     sessionStorage.removeItem('token');
-    Cookies.remove('userRole');
     navigate('/');
     throw new Error('Unauthorized');
 

@@ -5,7 +5,6 @@ import Button from '../components/Button';
 import { useNavigate, useLocation } from 'react-router-dom';
 import SuiteStoreContext from '../context/SuiteStoreContext';
 import { deleteData, postData } from '../utils/apiUtils';
-import Cookies from 'js-cookie';
 
 
 function Category() {
@@ -14,7 +13,6 @@ function Category() {
   const location = useLocation();
   const columns = ['Category name', 'Code', 'Tax']
   const { categoryData, setCategoryData } = useContext(SuiteStoreContext) ?? { categoryData: [] };
-  const retrievedRole = Cookies.get('userRole');
   const token = sessionStorage.getItem('token');
 
   const [newCategoryData, setNewCategoryData] = useState({
@@ -82,7 +80,7 @@ function Category() {
 
   return (
     <div>
-      <Header userRole={retrievedRole} />
+      <Header/>
       <div className="container-all-data">
         <div className="input-data">
             <form>
