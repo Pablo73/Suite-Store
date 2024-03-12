@@ -13,3 +13,5 @@ Projeto prático para desenvolvimento de habilidades em PHP
 - Visualizar seu histórico de compras.
   
 ## Para criar um usuário com a role "user", basta realizar o cadastro normal.
+
+- O acesso pelo token está limitado em 10 minutos
