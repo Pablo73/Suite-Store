@@ -17,10 +17,8 @@ function History() {
     const hours = dateTime.getHours().toString().padStart(2, '0');
     const minutes = dateTime.getMinutes().toString().padStart(2, '0');
 
-  return `${day}/${month}/${year} ${hours}:${minutes}`;
-
+    return `${day}/${month}/${year} ${hours}:${minutes}`;
   }
-
 
   const viewButtonHistory = (order_id) => {
     navigate(`/detailsTable/${order_id}`);

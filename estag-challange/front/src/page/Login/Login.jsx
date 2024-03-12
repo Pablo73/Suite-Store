@@ -24,6 +24,17 @@ function Login() {
 
   const handleLoginClick = async () => {
       try {
+
+        if (!loginData.name || !loginData.password) {
+          alert('Please enter a value to register.');
+          return;
+        }
+    
+        if (loginData.name.trim() === '') {
+          alert('Please enter a value to register.');
+          return;
+        }
+
         const url = 'user/login';
         const headers = { 'Content-Type': 'application/json' };
 

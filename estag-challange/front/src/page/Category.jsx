@@ -60,6 +60,12 @@ function Category() {
         alert('Please enter a value to register.');
         return;
       }
+
+      if (newCategoryData.name.trim() === '') {
+        alert('Please enter a value to register.');
+        return;
+      }
+      
       const url = 'category/insert';
       const headers = { 
         'Content-Type': 'application/json',

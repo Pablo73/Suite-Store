@@ -67,6 +67,11 @@ function Product() {
         alert('Please enter a value to register.');
         return;
       }
+
+      if (newProductData.name.trim() === '') {
+        alert('Please enter a value to register.');
+        return;
+      }
       const url = 'product/insert';
       const headers = { 
         'Content-Type': 'application/json',

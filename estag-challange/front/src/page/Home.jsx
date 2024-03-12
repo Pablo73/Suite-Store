@@ -51,6 +51,11 @@ function Home() {
       return;
     }
 
+    if (newPurchasetData.nameProduct.trim() === '') {
+      alert('Please enter a value to register.');
+      return;
+    }
+
     const existingPurchase = JSON.parse(localStorage.getItem('purchase')) || [];
     existingPurchase.push(newPurchasetData);
     localStorage.setItem('purchase', JSON.stringify(existingPurchase));

@@ -29,6 +29,16 @@ function Register() {
         return;
       }
 
+      if (!registerData.name || !registerData.password || !registerData.confirmPassword) {
+        alert('Please enter a value to register.');
+        return;
+      }
+  
+      if (registerData.name.trim() === '') {
+        alert('Please enter a value to register.');
+        return;
+      }
+
       const { confirmPassword, ...postDataWithoutConfirm } = registerData;
 
       const url = 'user/insert';
