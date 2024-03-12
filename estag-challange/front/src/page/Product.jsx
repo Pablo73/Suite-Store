@@ -53,8 +53,7 @@ function Product() {
 
   const handleApiResponseDelete = (response) => {
     if (response.status === 200 && response.message) {
-      console.log(response.message)
-      fetchDataAsyncOrder();
+      window.location.reload();
     } 
   };
 
@@ -82,7 +81,7 @@ function Product() {
 
   const handleApiResponseNew = (response) => {
     if (response.status === 201 && response.message) {
-      fetchDataAsyncOrder();
+      window.location.reload();
     }  
   }
   return (

@@ -194,7 +194,6 @@ function Home() {
 
   const cancelButton = () => {
     localStorage.removeItem('purchase');
-    updateTableData();
     window.location.reload();
   }
 

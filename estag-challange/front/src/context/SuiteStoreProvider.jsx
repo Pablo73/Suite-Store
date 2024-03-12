@@ -16,7 +16,7 @@ function SuiteStoreProvider({ children }) {
     const [userData, setuserData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const token = sessionStorage.getItem('token');
-    const [userRole, setUserRole] = useState('');
+    const [userRole, setUserRole] = useState('admin');
 
     const CATEGORY_GET_ALL_URL = 'category/allCategory';
     const PRODUCT_GET_ALL_URL = 'product/allProduct';
@@ -49,7 +49,7 @@ function SuiteStoreProvider({ children }) {
       };
     
       fetchDataAsyncOrder();
-    }, [location.pathname]); 
+    }, [location.pathname, setCategoryData]); 
 
 
     useEffect(() => {
@@ -98,14 +98,15 @@ function SuiteStoreProvider({ children }) {
     allOrderData,
     userData,
     userRole,
-    setUserRole
+    setUserRole,
   }), [
     categoryData,
     productData,
     isLoading,
     allOrderData,
     userData,
-    userRole
+    userRole,
+    setCategoryData
   ]);
 
   return (

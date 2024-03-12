@@ -26,7 +26,6 @@ export const postData = async (url, data, headers, callback, navigate, location)
       callback(response.data);
     }
   } catch (error) {
-    console.log(error)
     handleApiError(error, navigate, location);
   }
 };
@@ -38,7 +37,6 @@ export const deleteData = async (url, data, headers, callback, navigate, locatio
       callback(response.data);
     }
   } catch (error) {
-    console.log(error)
     handleApiError(error, navigate, location);
   }
 };

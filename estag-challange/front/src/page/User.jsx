@@ -48,7 +48,7 @@ function User() {
 
   const handleApiResponseDelete = (response) => {
     if (response.status === 200 && response.message) {
-      // window.location.reload();
+      window.location.reload();
     } 
   };
 
