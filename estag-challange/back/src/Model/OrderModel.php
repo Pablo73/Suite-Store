@@ -62,7 +62,8 @@ class OrderModel {
             u.ID AS user_id,
             u.NAME_USER,
             o.TOTAL_ORDER,
-            o.TAX_ORDER
+            o.TAX_ORDER,
+            o.ORDER_DATE
         FROM
             ORDERS o
         JOIN
