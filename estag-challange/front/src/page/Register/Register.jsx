@@ -77,7 +77,7 @@ const handleApiResponse = (response) => {
       </div>
       <div className="form-group">
       <Input 
-        label="Confirm the Password" 
+        label="Password"
         id="password" 
         type="password"
         name='confirmPassword'
@@ -88,7 +88,7 @@ const handleApiResponse = (response) => {
       </div>
       <div className="form-group">
        <Input 
-        label="Password" 
+        label="Confirm the Password"  
         id="confirm-password" 
         type="password"
         name='current-password'

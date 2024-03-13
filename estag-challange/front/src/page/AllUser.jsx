@@ -6,7 +6,7 @@ import Input from '../components/Input';
 import Button from '../components/Button';
 import { deleteData, postData } from '../utils/apiUtils';
 
-function User() {
+function AllUser() {
 
   const token = sessionStorage.getItem('token');
   const navigate = useNavigate();
@@ -144,4 +144,4 @@ function User() {
   );
 }
 
-export default User;
+export default AllUser;

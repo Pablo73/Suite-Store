@@ -256,4 +256,44 @@ class UserController {
         }
     }
     
+    public function updateUser() {
+        $token = $_SERVER['HTTP_AUTHORIZATION'];
+
+        if (!\Security\validateToken($token)) {
+            HttpResponse::UNAUTHORIZED("Invalid or expired token");
+            return;
+        }
+        $tokenData = \Security\decodeToken($token);
+
+        $userId = $tokenData['user_id'];
+
+        $jsonData = file_get_contents("php://input");
+            $data = json_decode($jsonData, true);
+        
+            if (isset($data['name']) && isset($data['password'])) {
+                $userName = $data['name'];
+                $password = $data['password'];
+                
+                $removingBlanksPassword = trim($password);
+                $removingBlanksName = trim($userName);
+                
+                if (empty($removingBlanksPassword) || empty($removingBlanksName)) {
+                    HttpResponse::BAD_REQUEST("Fill in the correct values.");
+                    return;
+                }
+        
+                $result = $this->userService->updateUser($userId, $userName, $password);
+        
+                if ($result) {
+                    HttpResponse::CREATED("User registered successfully");
+                    return;
+                } else {
+                    HttpResponse::BAD_REQUEST("Failed to register the user");
+                    return;
+                }
+            } else {
+                HttpResponse::BAD_REQUEST("Missing or invalid data in the request body.");
+                return;
+            }
+    }
 }

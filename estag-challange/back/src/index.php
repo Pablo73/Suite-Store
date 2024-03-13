@@ -50,9 +50,10 @@ $routes = [
     '/user/login' => ['controller' => '\Controller\UserController', 'action' => 'loginUser'],
     '/user/role' => ['controller' => '\Controller\UserController', 'action' => 'checkRole'],
     '/user' => ['controller' => '\Controller\UserController', 'action' => 'getAllUser'],
+    '/user/update' => ['controller' => '\Controller\UserController', 'action' => 'updateUser'],
 ];
 
-if (in_array($method, ['GET', 'POST', 'DELETE'])) {
+if (in_array($method, ['GET', 'POST', 'DELETE', 'PUT'])) {
     if (array_key_exists($uri, $routes)) {
         $controllerClass = $routes[$uri]['controller'];
         $action = $routes[$uri]['action'];

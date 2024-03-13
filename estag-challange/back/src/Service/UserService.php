@@ -28,4 +28,8 @@ class UserService {
         return $this->userModel->getAllUser();
     }
 
+    public function updateUser($userId, $userName, $password) {
+        return $this->userModel->updateUser($userId, $userName, $password);
+    }
+
 }

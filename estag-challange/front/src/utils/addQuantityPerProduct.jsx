@@ -3,15 +3,12 @@ function addQuantityPerProduct(getProductNamePurchase, numberValueAvailableQuant
 
     const getAllPurchaset = JSON.parse(localStorage.getItem('purchase')) || [];
 
-    
     const resultado = [];
     const somas = {};
     
     getAllPurchaset.forEach((item) => {
         const { nameProduct, amount} = item;
 
-
-        
         if (!somas[nameProduct]) {
             somas[nameProduct] = {
                 nameProduct,
@@ -39,7 +36,6 @@ function addQuantityPerProduct(getProductNamePurchase, numberValueAvailableQuant
     function handleInsufficientStock(productName, stockQuantity) {
         alert(`We have ${stockQuantity} ${productName} in stock. Change the quantity to complete the purchase.`);
     }
-
 }
 
 export default addQuantityPerProduct;

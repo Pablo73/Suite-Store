@@ -9,7 +9,7 @@ import Product from './page/Product';
 import Login from '../src/page/Login/Login';
 import DetailsTable from './page/DetailsTable'
 import Register from '../src/page/Register/Register';
-import User from './page/User';
+import AllUser from './page/AllUser';
 import SuiteStoreContext from './context/SuiteStoreContext';
 
 
@@ -42,10 +42,10 @@ function App() {
           }
        />
        <Route
-          path="/user"
+          path="/allUser"
           element={
             <ProtectedRoute user={userRole}>
-              <User />
+              <AllUser />
             </ProtectedRoute>
           }
        />

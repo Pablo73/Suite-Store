@@ -51,6 +51,37 @@ header menu {
   border-radius: 5px;
 }
 
+.menuSetting {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.menuSetting .person,
+.menuSetting .logoff {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 90px;
+}
+
+.menuSetting .person:hover,
+.menuSetting .logoff:hover {
+  background-color: #f0f0f0;
+}
+
+.menuSetting i {
+  font-size: 24px;
+}
+
+.menuSetting div {
+  margin-top: 5px;
+}
+
 @media (max-width: 710px) {
   .menuLogoff {
     display: none;

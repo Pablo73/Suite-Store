@@ -6,7 +6,7 @@ import Loading from '../../components/Loading/Loading';
 function Header() {
   const { isLoading } = useContext(SuiteStoreContext);
 
-  const { setUserRole } = useContext(SuiteStoreContext);
+  const { userRole, setUserRole } = useContext(SuiteStoreContext);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
@@ -21,18 +21,39 @@ function Header() {
     navigate('/');
   }
 
+  const handleSetting = () => {
+    
+
+  }
+
   const adminLinks = (
     <>
       <li><NavLink to="/home">Home</NavLink></li>
       <li><NavLink to="/product">Products</NavLink></li>
       <li><NavLink to="/category">Categories</NavLink></li>
       <li><NavLink to="/history">History</NavLink></li>
-      <li><NavLink to="/user">User</NavLink></li>
+      <li><NavLink to="/allUser">User</NavLink></li>
+    </>
+  );
+
+  const userLinks = (
+    <>
+      <li><NavLink to="/home">Home</NavLink></li>
+      <li><NavLink to="/history">History</NavLink></li>
     </>
   );
 
   const menuLogoff = (
-    <span onClick={handleLogoff}>Logoff</span>
+    <div className='menuSetting'>
+      <div className='person'>
+        <i id='burguer' onClick={handleSetting} className="material-symbols-outlined">person</i>
+        <div onClick={handleSetting}>Setting user</div>
+      </div>
+      <div className='logoff'>
+        <i id='burguer' onClick={handleLogoff} className="material-symbols-outlined">logout</i>
+        <div onClick={handleLogoff}>Logout</div>  
+      </div>
+    </div>
   );
 
   return (
@@ -47,7 +68,7 @@ function Header() {
               <Loading/>
             ) : (
               <ul>
-                {adminLinks}
+                 {userRole === 'admin' ? adminLinks : userLinks}
               </ul>
             )}
           </nav>
