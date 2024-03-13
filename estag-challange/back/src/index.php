@@ -26,7 +26,7 @@ try {
 }
 
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, DELETE");
+header("Access-Control-Allow-Methods: GET, POST, DELETE, PUT");
 header("Access-Control-Allow-Headers: Authorization, Content-Type");
 header("Access-Control-Allow-Credentials: true");
 header("Content-Type: application/json");
@@ -51,6 +51,7 @@ $routes = [
     '/user/role' => ['controller' => '\Controller\UserController', 'action' => 'checkRole'],
     '/user' => ['controller' => '\Controller\UserController', 'action' => 'getAllUser'],
     '/user/update' => ['controller' => '\Controller\UserController', 'action' => 'updateUser'],
+    '/user/id' => ['controller' => '\Controller\UserController', 'action' => 'getIdUser'],
 ];
 
 if (in_array($method, ['GET', 'POST', 'DELETE', 'PUT'])) {

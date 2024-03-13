@@ -258,42 +258,63 @@ class UserController {
     
     public function updateUser() {
         $token = $_SERVER['HTTP_AUTHORIZATION'];
-
+    
         if (!\Security\validateToken($token)) {
             HttpResponse::UNAUTHORIZED("Invalid or expired token");
             return;
         }
+    
         $tokenData = \Security\decodeToken($token);
-
         $userId = $tokenData['user_id'];
-
+        $role = $tokenData['role'];
+    
         $jsonData = file_get_contents("php://input");
-            $data = json_decode($jsonData, true);
-        
-            if (isset($data['name']) && isset($data['password'])) {
-                $userName = $data['name'];
-                $password = $data['password'];
-                
-                $removingBlanksPassword = trim($password);
-                $removingBlanksName = trim($userName);
-                
-                if (empty($removingBlanksPassword) || empty($removingBlanksName)) {
-                    HttpResponse::BAD_REQUEST("Fill in the correct values.");
-                    return;
-                }
-        
-                $result = $this->userService->updateUser($userId, $userName, $password);
-        
-                if ($result) {
-                    HttpResponse::CREATED("User registered successfully");
-                    return;
-                } else {
-                    HttpResponse::BAD_REQUEST("Failed to register the user");
-                    return;
-                }
-            } else {
-                HttpResponse::BAD_REQUEST("Missing or invalid data in the request body.");
+        $data = json_decode($jsonData, true);
+    
+        if (isset($data['name']) && isset($data['password'])) {
+            $userName = $data['name'];
+            $password = $data['password'];
+    
+            $removingBlanksPassword = trim($password);
+            $removingBlanksName = trim($userName);
+    
+            if (empty($removingBlanksPassword) || empty($removingBlanksName)) {
+                HttpResponse::BAD_REQUEST("Fill in the correct values.");
                 return;
             }
+    
+            $result = $this->userService->updateUser($userId, $userName, $role, $password);
+    
+            if ($result) {
+                HttpResponse::OK("User updated successfully");
+                return;
+            } else {
+                HttpResponse::BAD_REQUEST("Failed to update the user");
+                return;
+            }
+        } else {
+            HttpResponse::BAD_REQUEST("Missing or invalid data in the request body.");
+            return;
+        }
+    }
+
+    public function getIdUser(): void{
+        try {
+            $token = $_SERVER['HTTP_AUTHORIZATION'];
+    
+            if (!\Security\validateToken($token)) {
+                HttpResponse::UNAUTHORIZED("Invalid or expired token");
+                return;
+            }
+        
+            $tokenData = \Security\decodeToken($token);
+            $userId = $tokenData['user_id'];
+            $result = $this->userService->getIdUser($userId);
+             
+            HttpResponse::OK($result);
+
+        } catch (Exception $e) {
+            HttpResponse::SERVER_ERROR($e->getMessage());
+        }
     }
 }

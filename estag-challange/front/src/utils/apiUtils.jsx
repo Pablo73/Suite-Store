@@ -41,6 +41,17 @@ export const deleteData = async (url, data, headers, callback, navigate, locatio
   }
 };
 
+export const putData = async (url, data, headers, callback, navigate, location) => {
+  try {
+    const response = await axios.put(`${baseUrl}/${url}`, data, { headers });
+    if (callback) {
+      callback(response.data);
+    }
+  } catch (error) {
+    handleApiError(error, navigate, location);
+  }
+};
+
 const handleApiError = (error, navigate, location) => {
   if (error.response && error.response.status === 401) {
     alert('Invalid user or expired token.');

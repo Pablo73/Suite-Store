@@ -24,12 +24,16 @@ class UserService {
         return $this->userModel->authenticateUser($name, $password);
     }
     
-    public function getAllUser(): array {
+    public function getAllUser() {
         return $this->userModel->getAllUser();
     }
 
-    public function updateUser($userId, $userName, $password) {
-        return $this->userModel->updateUser($userId, $userName, $password);
+    public function updateUser($userId, $userName, $role, $password) {
+        return $this->userModel->updateUser($userId, $userName, $role, $password);
+    }
+
+    public function getIdUser($userId) {
+        return $this->userModel->getIdUser($userId);
     }
 
 }

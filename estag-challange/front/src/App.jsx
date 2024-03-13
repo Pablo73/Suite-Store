@@ -10,6 +10,7 @@ import Login from '../src/page/Login/Login';
 import DetailsTable from './page/DetailsTable'
 import Register from '../src/page/Register/Register';
 import AllUser from './page/AllUser';
+import User from './page/User';
 import SuiteStoreContext from './context/SuiteStoreContext';
 
 
@@ -24,6 +25,7 @@ function App() {
         <Route path="/history" element={<History />} />
         <Route path="/detailsTable/:id" element={<DetailsTable />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/user" element={<User />} />
         <Route path="/" element={<Login />} />
         <Route
           path="/category"

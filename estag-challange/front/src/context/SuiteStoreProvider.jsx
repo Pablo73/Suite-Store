@@ -99,6 +99,7 @@ function SuiteStoreProvider({ children }) {
     userData,
     userRole,
     setUserRole,
+    setIsLoading,    
   }), [
     categoryData,
     productData,

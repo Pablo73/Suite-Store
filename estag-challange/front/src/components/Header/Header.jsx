@@ -22,8 +22,7 @@ function Header() {
   }
 
   const handleSetting = () => {
-    
-
+    navigate('/user');
   }
 
   const adminLinks = (

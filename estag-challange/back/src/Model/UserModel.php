@@ -93,14 +93,29 @@ class UserModel {
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function updateUser($userId, $userName, $password) {
+    public function updateUser($userId, $userName, $role, $password) {
 
-        $query = $this->myPDO->query("UPDATE PERSON SET PASSWORD_USER_HASH = :newPassword, NAME_USER = :userName WHERE ID = :userId;");
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+
+        $query = "UPDATE PERSON SET PASSWORD_USER_HASH = :newPassword, NAME_USER = :userName, ROLE_USER = :newRole WHERE ID = :userId;";
 
         $stmt = $this->myPDO->prepare($query);
         $stmt->bindValue(':userId', $userId);
         $stmt->bindValue(':userName', $userName);
-        $stmt->bindValue(':newPassword', $password);
-        return $stmt->execute();
+        $stmt->bindValue(':newPassword', $hashedPassword);
+        $stmt->bindValue(':newRole', $role);
+        $success = $stmt->execute();
+
+        return $success;
+    }
+
+    public function getIdUser($userId) {
+        $query = "SELECT * FROM PERSON WHERE ID = :userId;";
+        $stmt = $this->myPDO->prepare($query);
+        $stmt->bindValue(':userId', $userId);
+        $stmt->execute();  
+
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC); 
+        return $result;
     }
 }
