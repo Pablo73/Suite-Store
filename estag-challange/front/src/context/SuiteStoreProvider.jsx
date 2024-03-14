@@ -49,7 +49,7 @@ function SuiteStoreProvider({ children }) {
       };
     
       fetchDataAsyncOrder();
-    }, [location.pathname, setCategoryData]); 
+    }, [location.pathname]); 
 
 
     useEffect(() => {

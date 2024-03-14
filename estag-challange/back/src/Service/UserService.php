@@ -16,16 +16,12 @@ class UserService {
         return $this->userModel->inserirUser($name, $password, $role);
     }
     
-    public function deleteUser($name) {
-        return $this->userModel->deleteUser($name);
-    }
-    
-    public function authenticateUser($name, $password) {
-        return $this->userModel->authenticateUser($name, $password);
-    }
-    
     public function getAllUser() {
         return $this->userModel->getAllUser();
+    }
+
+    public function deleteUser($name) {
+        return $this->userModel->deleteUser($name);
     }
 
     public function updateUser($userId, $userName, $role, $password) {

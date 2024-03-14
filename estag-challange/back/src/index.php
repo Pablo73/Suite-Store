@@ -1,20 +1,22 @@
 <?php
 
 require __DIR__ . '/vendor/autoload.php';
-
+include('config.php');
 error_log('Sou um log,URI: $uri, Method: $method');
 
-include('config.php');
 use Controller\CategoryController;
 use Service\CategoryService;
 use Model\CategoryModel;
 use Controller\OrderController;
 use Controller\ProductController;
 use Controller\UserController;
+use Controller\LoginController;
+use Model\LoginModel;
 use Service\OrderService;
 use Model\OrderModel;
 use Model\ProductModel;
 use Model\UserModel;
+use Service\LoginService;
 use Service\ProductService;
 use Service\UserService;
 
@@ -37,6 +39,10 @@ try {
     $userModel = new UserModel($myPDO);
     $userService = new UserService($userModel);
     $userController = new UserController($userService);    
+
+    $loginModel = new LoginModel($myPDO);
+    $loginService = new LoginService($loginModel);
+    $loginController = new LoginController($loginService); 
 
 } catch (PDOException $e) {
     echo "Database connection error.";
@@ -65,11 +71,11 @@ $routes = [
     '/order/allOrderItem' => ['controller' => '\Controller\OrderController', 'action' => 'getAllOrderItem'],
     '/user/insert' => ['controller' => '\Controller\UserController', 'action' => 'inserirUser'],
     '/user/delete' => ['controller' => '\Controller\UserController', 'action' => 'deleteUser'],
-    '/user/login' => ['controller' => '\Controller\UserController', 'action' => 'loginUser'],
-    '/user/role' => ['controller' => '\Controller\UserController', 'action' => 'checkRole'],
     '/user' => ['controller' => '\Controller\UserController', 'action' => 'getAllUser'],
     '/user/update' => ['controller' => '\Controller\UserController', 'action' => 'updateUser'],
     '/user/id' => ['controller' => '\Controller\UserController', 'action' => 'getIdUser'],
+    '/user/login' => ['controller' => '\Controller\LoginController', 'action' => 'loginUser'],
+    '/user/role' => ['controller' => '\Controller\LoginController', 'action' => 'checkRole'],
 ];
 
 if (in_array($method, ['GET', 'POST', 'DELETE', 'PUT'])) {
@@ -90,6 +96,9 @@ if (in_array($method, ['GET', 'POST', 'DELETE', 'PUT'])) {
                     break;
                 case '\Controller\UserController':
                     $controller = new $controllerClass($userService);
+                    break;
+                case '\Controller\LoginController':
+                    $controller = new $controllerClass($loginService);
                     break;
                 default:
                     echo 'Invalid controller';
