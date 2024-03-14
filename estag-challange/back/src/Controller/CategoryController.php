@@ -2,13 +2,15 @@
 namespace Controller;
 use Exception;
 
+use Service\CategoryService;
 use Security\SecurityToken;
+use Util\HttpResponse;
 
 class CategoryController {
     private $categoryService;
 
-    public function __construct($myPDO) {
-        $this->categoryService = new \Service\CategoryService($myPDO);
+    public function __construct(CategoryService $categoryService) {
+        $this->categoryService = $categoryService;
     }
 
     public function postInserirCategoria() {
@@ -16,7 +18,7 @@ class CategoryController {
             $token = $_SERVER['HTTP_AUTHORIZATION'];
     
             if (!SecurityToken::validateToken($token)) {
-                \Util\HttpResponse::UNAUTHORIZED("Invalid or expired token");
+                HttpResponse::UNAUTHORIZED("Invalid or expired token");
                 return;
             }
 
@@ -34,7 +36,7 @@ class CategoryController {
                 $trimmedStr = trim($name);
         
                 if (!is_numeric($tax) || empty($trimmedStr)) {
-                    \Util\HttpResponse::BAD_REQUEST("Fill in the correct values.");
+                    HttpResponse::BAD_REQUEST("Fill in the correct values.");
                     return;
                 }
     
@@ -42,18 +44,18 @@ class CategoryController {
                     $result = $this->categoryService->inserirCategoriaService($name, $tax);
                     
                     if ($result) {
-                        \Util\HttpResponse::CREATED($result);
+                        HttpResponse::CREATED($result);
                     } else {
-                        \Util\HttpResponse::BAD_REQUEST("Failed to register the category");
+                        HttpResponse::BAD_REQUEST("Failed to register the category");
                     }
                 } else {
-                    \Util\HttpResponse::FORBIDDEN("User does not have the required role");
+                    HttpResponse::FORBIDDEN("User does not have the required role");
                 }
             } else {
-                \Util\HttpResponse::BAD_REQUEST("Missing or invalid data in the request body.");
+                HttpResponse::BAD_REQUEST("Missing or invalid data in the request body.");
             }
         } catch (Exception $e) {
-            \Util\HttpResponse::SERVER_ERROR($e->getMessage());
+            HttpResponse::SERVER_ERROR($e->getMessage());
         }
     }
     
@@ -64,7 +66,7 @@ class CategoryController {
             $token = $_SERVER['HTTP_AUTHORIZATION'];
 
             if (!SecurityToken::validateToken($token)) {
-                \Util\HttpResponse::UNAUTHORIZED("Invalid or expired token");
+                HttpResponse::UNAUTHORIZED("Invalid or expired token");
                 return;
             }
 
@@ -84,16 +86,16 @@ class CategoryController {
                     $result = $this->categoryService->deleteCategory($name);
 
                 } else {
-                    \Util\HttpResponse::FORBIDDEN("User does not have the required role");
+                    HttpResponse::FORBIDDEN("User does not have the required role");
                 }
             }
             if ($result) {
-                \Util\HttpResponse::OK($result);
+                HttpResponse::OK($result);
             } else {
-                \Util\HttpResponse::NOT_FOUND("Category not found or deletion failed");
+                HttpResponse::NOT_FOUND("Category not found or deletion failed");
             }
         } catch (Exception $e) {
-            \Util\HttpResponse::SERVER_ERROR($e->getMessage());
+            HttpResponse::SERVER_ERROR($e->getMessage());
         }
     }
 
@@ -102,10 +104,10 @@ class CategoryController {
             
             $result = $this->categoryService->getAllCategory();
              
-            \Util\HttpResponse::OK($result);
+            HttpResponse::OK($result);
 
         } catch (Exception $e) {
-            \Util\HttpResponse::SERVER_ERROR($e->getMessage());
+            HttpResponse::SERVER_ERROR($e->getMessage());
         }
     }
 }

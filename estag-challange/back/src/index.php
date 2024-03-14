@@ -5,10 +5,39 @@ require __DIR__ . '/vendor/autoload.php';
 error_log('Sou um log,URI: $uri, Method: $method');
 
 include('config.php');
+use Controller\CategoryController;
+use Service\CategoryService;
+use Model\CategoryModel;
+use Controller\OrderController;
+use Controller\ProductController;
+use Controller\UserController;
+use Service\OrderService;
+use Model\OrderModel;
+use Model\ProductModel;
+use Model\UserModel;
+use Service\ProductService;
+use Service\UserService;
 
 try {
     $myPDO = new PDO("pgsql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD);
     $myPDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $categoryModel = new CategoryModel($myPDO);
+    $categoryService = new CategoryService($categoryModel);
+    $categoryController = new CategoryController($categoryService);
+    
+    $productModel = new ProductModel($myPDO);
+    $productService = new ProductService($productModel);
+    $productController = new ProductController($productService);
+
+    $orderModel = new OrderModel($myPDO);
+    $orderService = new OrderService($orderModel, $productService);
+    $orderController = new OrderController($orderService);
+
+    $userModel = new UserModel($myPDO);
+    $userService = new UserService($userModel);
+    $userController = new UserController($userService);    
+
 } catch (PDOException $e) {
     echo "Database connection error.";
     exit;
@@ -47,10 +76,26 @@ if (in_array($method, ['GET', 'POST', 'DELETE', 'PUT'])) {
     if (array_key_exists($uri, $routes)) {
         $controllerClass = $routes[$uri]['controller'];
         $action = $routes[$uri]['action'];
-
+    
         if (class_exists($controllerClass)) {
-            $controller = new $controllerClass($myPDO);
-
+            switch ($controllerClass) {
+                case '\Controller\CategoryController':
+                    $controller = new $controllerClass($categoryService);
+                    break;
+                case '\Controller\ProductController':
+                    $controller = new $controllerClass($productService);
+                    break;
+                case '\Controller\OrderController':
+                    $controller = new $controllerClass($orderService);
+                    break;
+                case '\Controller\UserController':
+                    $controller = new $controllerClass($userService);
+                    break;
+                default:
+                    echo 'Invalid controller';
+                    exit;
+            }
+    
             if (method_exists($controller, $action)) {
                 $controller->$action();
             } else {

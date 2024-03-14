@@ -2,12 +2,14 @@
 
 namespace Service;
 
+use Model\CategoryModel;
+
 class CategoryService {
 
     private $categoryModel;
 
-    public function __construct($myPDO) {
-        $this->categoryModel = new \Model\CategoryModel($myPDO);
+    public function __construct(CategoryModel $categoryModel) {
+        $this->categoryModel = $categoryModel;
     }
 
     public function inserirCategoriaService(string $name, float $tax): array {

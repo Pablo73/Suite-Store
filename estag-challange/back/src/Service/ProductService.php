@@ -2,12 +2,14 @@
 namespace Service;
 use Exception;
 
+use Model\ProductModel;
+
 class ProductService {
     
     private $productsModel;
 
-    public function __construct($myPDO) {
-        $this->productsModel = new \Model\ProductModel($myPDO);
+    public function __construct(ProductModel $productsModel) {
+        $this->productsModel =  $productsModel;
     }
 
     public function insertProduct(String $name, int $amount, float $price, string $nameCategory): array {

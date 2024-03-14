@@ -46,7 +46,6 @@ function Login() {
   };
 
   const handleApiResponse = (response) => {
-    console.log(response);
     if (response.status === 200) {
       const token = response.message.token;
       sessionStorage.setItem('token', token);
@@ -54,11 +53,16 @@ function Login() {
     }
   };
 
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    handleLoginClick();
+  };
+
   return (
     <div className="body">
     <div className="login-container">
       <h2>Login</h2>
-      <form id="loginForm">
+      <form id="loginForm" onSubmit={handleFormSubmit}>
         <div className="form-group">
         <Input 
           label="User" 
@@ -84,7 +88,7 @@ function Login() {
         <Button id="button-login" 
           className="login-btn" 
           name="Entrar" 
-          type="button"
+          type="submit"
           onClick={handleLoginClick}
         />
         <Link to="/register" className="signup-link">

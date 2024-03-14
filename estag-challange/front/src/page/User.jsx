@@ -95,7 +95,6 @@ function User() {
   };
 
   const handleApiResponse = (response) => {
-    console.log(response)
     if (response.status === 200) {
       alert(`Success register.`);
       navigate('/');

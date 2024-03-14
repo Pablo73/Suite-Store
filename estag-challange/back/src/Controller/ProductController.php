@@ -3,13 +3,15 @@
 namespace Controller;
 use Exception;
 
+use Service\ProductService;
 use Security\SecurityToken;
+use Util\HttpResponse;
 
 class ProductController {
     private $productsService;
 
-    public function __construct($myPDO) {
-        $this->productsService = new \Service\ProductService($myPDO);
+    public function __construct(ProductService $productsService) {
+        $this->productsService = $productsService;
     }
 
     public function postInserirProduct() {
@@ -18,7 +20,7 @@ class ProductController {
             $token = $_SERVER['HTTP_AUTHORIZATION'];
 
             if (!SecurityToken::validateToken($token)) {
-                \Util\HttpResponse::UNAUTHORIZED("Invalid or expired token");
+                HttpResponse::UNAUTHORIZED("Invalid or expired token");
                 return;
             }
 
@@ -43,7 +45,7 @@ class ProductController {
                 $removingBlanksCategory = trim($nameCategory);
         
                 if (!is_numeric($amount) || !is_numeric($price) || empty($removingBlanksName) || empty($removingBlanksCategory)) {
-                    \Util\HttpResponse::BAD_REQUEST("Fill in the correct values.");
+                    HttpResponse::BAD_REQUEST("Fill in the correct values.");
                     return;
                 }
 
@@ -52,18 +54,18 @@ class ProductController {
                     $result = $this->productsService->insertProduct($name, $amount, $price, $nameCategory);
             
                     if ($result) {
-                        \Util\HttpResponse::CREATED($result);
+                        HttpResponse::CREATED($result);
                     } else {
-                        \Util\HttpResponse::BAD_REQUEST("Failed to register the product");
+                        HttpResponse::BAD_REQUEST("Failed to register the product");
                     }
                 } else {
-                    \Util\HttpResponse::FORBIDDEN("User does not have the required role");
+                    HttpResponse::FORBIDDEN("User does not have the required role");
                 }
             } else {
-                \Util\HttpResponse::BAD_REQUEST("Missing or invalid data in the request body.");
+                HttpResponse::BAD_REQUEST("Missing or invalid data in the request body.");
             }
         } catch (Exception $e) {
-            \Util\HttpResponse::SERVER_ERROR($e->getMessage());
+            HttpResponse::SERVER_ERROR($e->getMessage());
         }
     }
 
@@ -73,7 +75,7 @@ class ProductController {
             $token = $_SERVER['HTTP_AUTHORIZATION'];
 
             if (!SecurityToken::validateToken($token)) {
-                \Util\HttpResponse::UNAUTHORIZED("Invalid or expired token");
+                HttpResponse::UNAUTHORIZED("Invalid or expired token");
                 return;
             }
 
@@ -94,17 +96,17 @@ class ProductController {
                     $result = $this->productsService->deleteProduct($name);
 
                 } else {
-                    \Util\HttpResponse::FORBIDDEN("User does not have the required role");
+                    HttpResponse::FORBIDDEN("User does not have the required role");
                 }
             }
             if ($result) {
-                \Util\HttpResponse::OK($result);
+                HttpResponse::OK($result);
             } else {
-                \Util\HttpResponse::NOT_FOUND("Product not found or deletion failed");
+                HttpResponse::NOT_FOUND("Product not found or deletion failed");
             }
             
         } catch (Exception $e) {
-            \Util\HttpResponse::SERVER_ERROR($e->getMessage());
+            HttpResponse::SERVER_ERROR($e->getMessage());
         }
     }
 
@@ -112,10 +114,10 @@ class ProductController {
         try {
             $result = $this->productsService->getAllProduct();
              
-            \Util\HttpResponse::OK($result);
+            HttpResponse::OK($result);
 
         } catch (Exception $e) {
-            \Util\HttpResponse::SERVER_ERROR($e->getMessage());
+            HttpResponse::SERVER_ERROR($e->getMessage());
         }
     }
 

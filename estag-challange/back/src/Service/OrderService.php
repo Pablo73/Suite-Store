@@ -2,12 +2,15 @@
 
 namespace Service;
 
+use Model\OrderModel;
+use Service\ProductService;
+
 class OrderService {
     private $orderModel;
     private $productService;
-    public function __construct($myPDO) {
-        $this->orderModel = new \Model\OrderModel($myPDO);
-        $this->productService = new \Service\ProductService($myPDO);
+    public function __construct(OrderModel $orderModel, ProductService $productService) {
+        $this->orderModel = $orderModel;
+        $this->productService = $productService;
     }
 
     public function inserirOrder(float $totalPrice, float $totalTax) {

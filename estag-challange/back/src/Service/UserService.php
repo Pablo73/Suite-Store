@@ -2,12 +2,14 @@
 
 namespace Service;
 
+use Model\UserModel;
+
 class UserService { 
 
     private $userModel;
 
-    public function __construct($myPDO) {
-        $this->userModel = new \Model\UserModel($myPDO);
+    public function __construct(UserModel $userModel) {
+        $this->userModel = $userModel;
     }
 
     public function inserirUser($name, $password, $role) {
