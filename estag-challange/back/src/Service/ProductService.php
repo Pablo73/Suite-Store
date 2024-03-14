@@ -1,12 +1,11 @@
 <?php
-
 namespace Service;
 use Exception;
 
-require_once __DIR__ . '/../Model/ProductsModel.php';
-
 class ProductService {
+    
     private $productsModel;
+
     public function __construct($myPDO) {
         $this->productsModel = new \Model\ProductModel($myPDO);
     }

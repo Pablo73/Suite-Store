@@ -2,15 +2,13 @@
 
 namespace Model;
 
-require_once __DIR__ . '/../Model/CategoryModel.php';
-
 class ProductModel {
     private $myPDO;
     private $categoryModel;
 
     public function __construct(\PDO $myPDO) {
         $this->myPDO = $myPDO;
-        $this->categoryModel = new CategoryModel($myPDO);
+        $this->categoryModel = new \Model\CategoryModel($myPDO);
     }
 
     public function inserirProduct(String $name, int $amount, float $price, string $nameCategory) {

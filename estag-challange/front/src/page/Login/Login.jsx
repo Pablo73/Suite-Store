@@ -46,6 +46,7 @@ function Login() {
   };
 
   const handleApiResponse = (response) => {
+    console.log(response);
     if (response.status === 200) {
       const token = response.message.token;
       sessionStorage.setItem('token', token);

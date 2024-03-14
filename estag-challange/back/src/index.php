@@ -1,21 +1,10 @@
 <?php
 
+require __DIR__ . '/vendor/autoload.php';
+
 error_log('Sou um log,URI: $uri, Method: $method');
 
 include('config.php');
-require_once __DIR__ . '/Controller/CategoryController.php';
-require_once __DIR__ . '/Controller/ProductController.php';
-require_once __DIR__ . '/Controller/OrderController.php';
-require_once __DIR__ . '/Controller/UserController.php';
-require_once __DIR__ . '/Service/CategoryService.php';
-require_once __DIR__ . '/Service/ProductsService.php';
-require_once __DIR__ . '/Service/OrderService.php';
-require_once __DIR__ . '/Service/UserService.php';
-require_once __DIR__ . '/Model/CategoryModel.php';
-require_once __DIR__ . '/Model/ProductsModel.php';
-require_once __DIR__ . '/Model/OrderModel.php';
-require_once __DIR__ . '/Model/UserModel.php';
-
 
 try {
     $myPDO = new PDO("pgsql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD);

@@ -2,9 +2,6 @@
 
 namespace Service;
 
-require_once __DIR__ . '/../Model/OrderModel.php';
-require_once __DIR__ . '/../Service/ProductsService.php';
-
 class OrderService {
     private $orderModel;
     private $productService;

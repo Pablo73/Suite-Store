@@ -1,6 +1,6 @@
 <?php
 
-namespace Controller;
+namespace Util;
 
 class HttpResponse {
     public static function OK($message) {

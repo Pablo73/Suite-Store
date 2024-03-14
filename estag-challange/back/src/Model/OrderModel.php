@@ -2,16 +2,13 @@
 
 namespace Model;
 
-require_once __DIR__ . '/../Model/ProductsModel.php';
-
-
 class OrderModel {
     private $myPDO;
     private $productsModel;
 
     public function __construct(\PDO $myPDO) {
         $this->myPDO = $myPDO;
-        $this->productsModel = new ProductModel($myPDO);
+        $this->productsModel = new \Model\ProductModel($myPDO);
     }
 
     public function inserirOrder(float $totalPrice, float $totalTax) {

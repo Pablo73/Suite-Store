@@ -2,9 +2,7 @@
 namespace Controller;
 use Exception;
 
-require_once __DIR__ . '/../Service/CategoryService.php';
-require_once __DIR__ . '/../util/HttpResponse.php';
-require_once __DIR__ . '/../Security/SecurityToken.php';
+use Security\SecurityToken;
 
 class CategoryController {
     private $categoryService;
@@ -17,12 +15,12 @@ class CategoryController {
         try {
             $token = $_SERVER['HTTP_AUTHORIZATION'];
     
-            if (!\Security\validateToken($token)) {
-                HttpResponse::UNAUTHORIZED("Invalid or expired token");
+            if (!SecurityToken::validateToken($token)) {
+                \Util\HttpResponse::UNAUTHORIZED("Invalid or expired token");
                 return;
             }
 
-            $tokenData = \Security\decodeToken($token);
+            $tokenData = SecurityToken::decodeToken($token);
 
             $role = $tokenData['role'];
     
@@ -36,7 +34,7 @@ class CategoryController {
                 $trimmedStr = trim($name);
         
                 if (!is_numeric($tax) || empty($trimmedStr)) {
-                    HttpResponse::BAD_REQUEST("Fill in the correct values.");
+                    \Util\HttpResponse::BAD_REQUEST("Fill in the correct values.");
                     return;
                 }
     
@@ -44,18 +42,18 @@ class CategoryController {
                     $result = $this->categoryService->inserirCategoriaService($name, $tax);
                     
                     if ($result) {
-                        HttpResponse::CREATED($result);
+                        \Util\HttpResponse::CREATED($result);
                     } else {
-                        HttpResponse::BAD_REQUEST("Failed to register the category");
+                        \Util\HttpResponse::BAD_REQUEST("Failed to register the category");
                     }
                 } else {
-                    HttpResponse::FORBIDDEN("User does not have the required role");
+                    \Util\HttpResponse::FORBIDDEN("User does not have the required role");
                 }
             } else {
-                HttpResponse::BAD_REQUEST("Missing or invalid data in the request body.");
+                \Util\HttpResponse::BAD_REQUEST("Missing or invalid data in the request body.");
             }
         } catch (Exception $e) {
-            HttpResponse::SERVER_ERROR($e->getMessage());
+            \Util\HttpResponse::SERVER_ERROR($e->getMessage());
         }
     }
     
@@ -65,12 +63,12 @@ class CategoryController {
 
             $token = $_SERVER['HTTP_AUTHORIZATION'];
 
-            if (!\Security\validateToken($token)) {
-                HttpResponse::UNAUTHORIZED("Invalid or expired token");
+            if (!SecurityToken::validateToken($token)) {
+                \Util\HttpResponse::UNAUTHORIZED("Invalid or expired token");
                 return;
             }
 
-            $tokenData = \Security\decodeToken($token);
+            $tokenData = SecurityToken::decodeToken($token);
 
             $role = $tokenData['role'];
 
@@ -86,16 +84,16 @@ class CategoryController {
                     $result = $this->categoryService->deleteCategory($name);
 
                 } else {
-                    HttpResponse::FORBIDDEN("User does not have the required role");
+                    \Util\HttpResponse::FORBIDDEN("User does not have the required role");
                 }
             }
             if ($result) {
-                HttpResponse::OK($result);
+                \Util\HttpResponse::OK($result);
             } else {
-                HttpResponse::NOT_FOUND("Category not found or deletion failed");
+                \Util\HttpResponse::NOT_FOUND("Category not found or deletion failed");
             }
         } catch (Exception $e) {
-            HttpResponse::SERVER_ERROR($e->getMessage());
+            \Util\HttpResponse::SERVER_ERROR($e->getMessage());
         }
     }
 
@@ -104,10 +102,10 @@ class CategoryController {
             
             $result = $this->categoryService->getAllCategory();
              
-            HttpResponse::OK($result);
+            \Util\HttpResponse::OK($result);
 
         } catch (Exception $e) {
-            HttpResponse::SERVER_ERROR($e->getMessage());
+            \Util\HttpResponse::SERVER_ERROR($e->getMessage());
         }
     }
 }

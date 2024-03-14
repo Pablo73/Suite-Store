@@ -3,9 +3,7 @@
 namespace Controller;
 use Exception;
 
-require_once __DIR__ . '/../Service/OrderService.php';
-require_once __DIR__ . '/../util/HttpResponse.php';
-require_once __DIR__ . '/../Security/SecurityToken.php';
+use Security\SecurityToken;
 
 class OrderController {
     private $orderService;
@@ -19,8 +17,8 @@ class OrderController {
             
             $token = $_SERVER['HTTP_AUTHORIZATION'];
 
-            if (!\Security\validateToken($token)) {
-                HttpResponse::UNAUTHORIZED("Invalid or expired token");
+            if (!SecurityToken::validateToken($token)) {
+                \Util\HttpResponse::UNAUTHORIZED("Invalid or expired token");
                 return;
             }
 
@@ -32,22 +30,22 @@ class OrderController {
                 $totalTax = $data['totalTax'];
         
                 if (!is_numeric($totalPrice) && !is_numeric($totalTax) ) {
-                    HttpResponse::BAD_REQUEST("Fill in the correct values.");
+                    \Util\HttpResponse::BAD_REQUEST("Fill in the correct values.");
                     return;
                 }
         
                 $result = $this->orderService->inserirOrder($totalPrice, $totalTax);
         
                 if ($result) {
-                    HttpResponse::CREATED($result);
+                    \Util\HttpResponse::CREATED($result);
                 } else {
-                    HttpResponse::BAD_REQUEST("Failed to register the order");
+                    \Util\HttpResponse::BAD_REQUEST("Failed to register the order");
                 }
             } else {
-                HttpResponse::BAD_REQUEST("Missing or invalid data in the request body.");
+                \Util\HttpResponse::BAD_REQUEST("Missing or invalid data in the request body.");
             }
         } catch (Exception $e) {
-            HttpResponse::SERVER_ERROR($e->getMessage());
+            \Util\HttpResponse::SERVER_ERROR($e->getMessage());
         }
     }
 
@@ -56,12 +54,12 @@ class OrderController {
             
             $token = $_SERVER['HTTP_AUTHORIZATION'];
 
-            if (!\Security\validateToken($token)) {
-                HttpResponse::UNAUTHORIZED("Invalid or expired token");
+            if (!SecurityToken::validateToken($token)) {
+                \Util\HttpResponse::UNAUTHORIZED("Invalid or expired token");
                 return;
             }
 
-            $tokenData = \Security\decodeToken($token);
+            $tokenData = SecurityToken::decodeToken($token);
 
             $loggedInUser = $tokenData['user_id'];
 
@@ -73,22 +71,22 @@ class OrderController {
                 $orderId = $data['orderId'];
         
                 if (empty($objectPurchase) || !is_numeric($orderId) || empty($loggedInUser)) {
-                    HttpResponse::BAD_REQUEST("Fill in the correct values.");
+                    \Util\HttpResponse::BAD_REQUEST("Fill in the correct values.");
                     return;
                 }
         
                 $result = $this->orderService->inserirOrderItem($objectPurchase, $orderId, $loggedInUser);
         
                 if ($result) {
-                    HttpResponse::CREATED("Item of order registered successfully");
+                    \Util\HttpResponse::CREATED("Item of order registered successfully");
                 } else {
-                    HttpResponse::BAD_REQUEST("Failed to register the Item of order");
+                    \Util\HttpResponse::BAD_REQUEST("Failed to register the Item of order");
                 }
             } else {
-                HttpResponse::BAD_REQUEST("Missing or invalid data in the request body.");
+                \Util\HttpResponse::BAD_REQUEST("Missing or invalid data in the request body.");
             }
         } catch (Exception $e) {
-            HttpResponse::SERVER_ERROR($e->getMessage());
+            \Util\HttpResponse::SERVER_ERROR($e->getMessage());
         }
     }
 
@@ -97,12 +95,12 @@ class OrderController {
             
             $token = $_SERVER['HTTP_AUTHORIZATION'];
 
-            if (!\Security\validateToken($token)) {
-                HttpResponse::UNAUTHORIZED("Invalid or expired token");
+            if (!SecurityToken::validateToken($token)) {
+                \Util\HttpResponse::UNAUTHORIZED("Invalid or expired token");
                 return;
             }
 
-            $tokenData = \Security\decodeToken($token);
+            $tokenData = SecurityToken::decodeToken($token);
 
             $loggedInUser = $tokenData['user_id'];
             
@@ -112,11 +110,11 @@ class OrderController {
                 $result = $this->orderService->getAllOrder($loggedInUser);
         
                 if ($result) {
-                    HttpResponse::OK($result);
+                    \Util\HttpResponse::OK($result);
                 }
             }
         } catch (Exception $e) {
-            HttpResponse::SERVER_ERROR($e->getMessage());
+            \Util\HttpResponse::SERVER_ERROR($e->getMessage());
         }
     }
 
@@ -125,12 +123,12 @@ class OrderController {
             
             $token = $_SERVER['HTTP_AUTHORIZATION'];
 
-            if (!\Security\validateToken($token)) {
-                HttpResponse::UNAUTHORIZED("Invalid or expired token");
+            if (!SecurityToken::validateToken($token)) {
+                \Util\HttpResponse::UNAUTHORIZED("Invalid or expired token");
                 return;
             }
 
-            $tokenData = \Security\decodeToken($token);
+            $tokenData = SecurityToken::decodeToken($token);
 
             $loggedInUser = $tokenData['user_id'];
 
@@ -144,11 +142,11 @@ class OrderController {
                 $result = $this->orderService->getAllOrderItem($loggedInUser, $orderId);
         
                 if ($result) {
-                    HttpResponse::OK($result);
+                    \Util\HttpResponse::OK($result);
                 }
             }
         } catch (Exception $e) {
-            HttpResponse::SERVER_ERROR($e->getMessage());
+            \Util\HttpResponse::SERVER_ERROR($e->getMessage());
         }
     }
 }

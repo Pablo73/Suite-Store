@@ -1,0 +1,15 @@
+{
+    "require": {
+        "php": ">=7.4",
+        "ext-mbstring": "*"
+    },
+    "autoload": {
+        "psr-4": { 
+            "Security\\": "Security",
+            "Util\\": "util/",
+            "Controller\\": "Controller/",
+            "Model\\": "Model/",
+            "Service\\": "Service/"
+        }
+    }
+}

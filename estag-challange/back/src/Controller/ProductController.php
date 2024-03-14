@@ -3,9 +3,7 @@
 namespace Controller;
 use Exception;
 
-require_once __DIR__ . '/../Service/ProductsService.php';
-require_once __DIR__ . '/../util/HttpResponse.php';
-require_once __DIR__ . '/../Security/SecurityToken.php';
+use Security\SecurityToken;
 
 class ProductController {
     private $productsService;
@@ -14,18 +12,17 @@ class ProductController {
         $this->productsService = new \Service\ProductService($myPDO);
     }
 
-    
     public function postInserirProduct() {
         try {
             
             $token = $_SERVER['HTTP_AUTHORIZATION'];
 
-            if (!\Security\validateToken($token)) {
-                HttpResponse::UNAUTHORIZED("Invalid or expired token");
+            if (!SecurityToken::validateToken($token)) {
+                \Util\HttpResponse::UNAUTHORIZED("Invalid or expired token");
                 return;
             }
 
-            $tokenData = \Security\decodeToken($token);
+            $tokenData = SecurityToken::decodeToken($token);
 
             $role = $tokenData['role'];
 
@@ -46,7 +43,7 @@ class ProductController {
                 $removingBlanksCategory = trim($nameCategory);
         
                 if (!is_numeric($amount) || !is_numeric($price) || empty($removingBlanksName) || empty($removingBlanksCategory)) {
-                    HttpResponse::BAD_REQUEST("Fill in the correct values.");
+                    \Util\HttpResponse::BAD_REQUEST("Fill in the correct values.");
                     return;
                 }
 
@@ -55,18 +52,18 @@ class ProductController {
                     $result = $this->productsService->insertProduct($name, $amount, $price, $nameCategory);
             
                     if ($result) {
-                        HttpResponse::CREATED($result);
+                        \Util\HttpResponse::CREATED($result);
                     } else {
-                        HttpResponse::BAD_REQUEST("Failed to register the product");
+                        \Util\HttpResponse::BAD_REQUEST("Failed to register the product");
                     }
                 } else {
-                    HttpResponse::FORBIDDEN("User does not have the required role");
+                    \Util\HttpResponse::FORBIDDEN("User does not have the required role");
                 }
             } else {
-                HttpResponse::BAD_REQUEST("Missing or invalid data in the request body.");
+                \Util\HttpResponse::BAD_REQUEST("Missing or invalid data in the request body.");
             }
         } catch (Exception $e) {
-            HttpResponse::SERVER_ERROR($e->getMessage());
+            \Util\HttpResponse::SERVER_ERROR($e->getMessage());
         }
     }
 
@@ -75,12 +72,12 @@ class ProductController {
             
             $token = $_SERVER['HTTP_AUTHORIZATION'];
 
-            if (!\Security\validateToken($token)) {
-                HttpResponse::UNAUTHORIZED("Invalid or expired token");
+            if (!SecurityToken::validateToken($token)) {
+                \Util\HttpResponse::UNAUTHORIZED("Invalid or expired token");
                 return;
             }
 
-            $tokenData = \Security\decodeToken($token);
+            $tokenData = SecurityToken::decodeToken($token);
 
             $role = $tokenData['role'];
     
@@ -97,17 +94,17 @@ class ProductController {
                     $result = $this->productsService->deleteProduct($name);
 
                 } else {
-                    HttpResponse::FORBIDDEN("User does not have the required role");
+                    \Util\HttpResponse::FORBIDDEN("User does not have the required role");
                 }
             }
             if ($result) {
-                HttpResponse::OK($result);
+                \Util\HttpResponse::OK($result);
             } else {
-                HttpResponse::NOT_FOUND("Product not found or deletion failed");
+                \Util\HttpResponse::NOT_FOUND("Product not found or deletion failed");
             }
             
         } catch (Exception $e) {
-            HttpResponse::SERVER_ERROR($e->getMessage());
+            \Util\HttpResponse::SERVER_ERROR($e->getMessage());
         }
     }
 
@@ -115,10 +112,10 @@ class ProductController {
         try {
             $result = $this->productsService->getAllProduct();
              
-            HttpResponse::OK($result);
+            \Util\HttpResponse::OK($result);
 
         } catch (Exception $e) {
-            HttpResponse::SERVER_ERROR($e->getMessage());
+            \Util\HttpResponse::SERVER_ERROR($e->getMessage());
         }
     }
 

@@ -3,10 +3,7 @@
 namespace Controller;
 use Exception;
 
-require_once __DIR__ . '/../Service/UserService.php';
-require_once __DIR__ . '/../util/HttpResponse.php';
-require_once __DIR__ . '/../Security/SecurityToken.php';
-
+use Security\SecurityToken;
 
 class UserController { 
 
@@ -21,7 +18,7 @@ class UserController {
 
             $token = $_SERVER['HTTP_AUTHORIZATION'];
 
-            if (!\Security\validateToken($token)) {
+            if (!SecurityToken::validateToken($token)) {
 
                 $jsonData = file_get_contents("php://input");
                 $data = json_decode($jsonData, true);
@@ -34,26 +31,26 @@ class UserController {
                     $removingBlanksName = trim($name);
                     
                     if (empty($removingBlanksPassword) || empty($removingBlanksName)) {
-                        HttpResponse::BAD_REQUEST("Fill in the correct values.");
+                        \Util\HttpResponse::BAD_REQUEST("Fill in the correct values.");
                         return;
                     }
             
                     $result = $this->userService->inserirUser($name, $password, 'user');
             
                     if ($result) {
-                        HttpResponse::CREATED("User registered successfully");
+                        \Util\HttpResponse::CREATED("User registered successfully");
                         return;
                     } else {
-                        HttpResponse::BAD_REQUEST("Failed to register the user");
+                        \Util\HttpResponse::BAD_REQUEST("Failed to register the user");
                         return;
                     }
                 } else {
-                    HttpResponse::BAD_REQUEST("Missing or invalid data in the request body.");
+                    \Util\HttpResponse::BAD_REQUEST("Missing or invalid data in the request body.");
                     return;
                 }
             } 
 
-            $tokenData = \Security\decodeToken($token);
+            $tokenData = SecurityToken::decodeToken($token);
 
             $role = $tokenData['role'];
 
@@ -68,7 +65,7 @@ class UserController {
                 $removingBlanksName = trim($name);
                 
                 if (empty($removingBlanksPassword) || empty($removingBlanksName)) {
-                    HttpResponse::BAD_REQUEST("Fill in the correct values.");
+                    \Util\HttpResponse::BAD_REQUEST("Fill in the correct values.");
                     return;
                 }
 
@@ -76,18 +73,18 @@ class UserController {
                  $result = $this->userService->inserirUser($name, $password, 'admin');
          
                  if ($result) {
-                     HttpResponse::CREATED("User registered successfully");
+                    \Util\HttpResponse::CREATED("User registered successfully");
                  } else {
-                     HttpResponse::BAD_REQUEST("Failed to register the user");
+                    \Util\HttpResponse::BAD_REQUEST("Failed to register the user");
                  }
              } else {
-                HttpResponse::FORBIDDEN("User does not have the required role");
+                \Util\HttpResponse::FORBIDDEN("User does not have the required role");
             }
             } else {
-                HttpResponse::BAD_REQUEST("Missing or invalid data in the request body.");
+                \Util\HttpResponse::BAD_REQUEST("Missing or invalid data in the request body.");
             }
         } catch (Exception $e) {
-            HttpResponse::SERVER_ERROR($e->getMessage());
+            \Util\HttpResponse::SERVER_ERROR($e->getMessage());
         }
     }
 
@@ -96,12 +93,12 @@ class UserController {
 
             $token = $_SERVER['HTTP_AUTHORIZATION'];
 
-            if (!\Security\validateToken($token)) {
-                HttpResponse::UNAUTHORIZED("Invalid or expired token");
+            if (!SecurityToken::validateToken($token)) {
+                \Util\HttpResponse::UNAUTHORIZED("Invalid or expired token");
                 return;
             }
 
-            $tokenData = \Security\decodeToken($token);
+            $tokenData =SecurityToken::decodeToken($token);
 
             $role = $tokenData['role'];
 
@@ -116,7 +113,7 @@ class UserController {
                 $removingBlanksName = trim($name);
                 
                 if (empty($removingBlanksPassword) || empty($removingBlanksName)) {
-                    HttpResponse::BAD_REQUEST("Fill in the correct values.");
+                    \Util\HttpResponse::BAD_REQUEST("Fill in the correct values.");
                     return;
                 }
 
@@ -125,18 +122,18 @@ class UserController {
                     $result = $this->userService->inserirUser($name, $password, 'admin');
             
                     if ($result) {
-                        HttpResponse::CREATED("User registered successfully");
+                        \Util\HttpResponse::CREATED("User registered successfully");
                     } else {
-                        HttpResponse::BAD_REQUEST("Failed to register the user");
+                        \Util\HttpResponse::BAD_REQUEST("Failed to register the user");
                     }
                 } else {
-                    HttpResponse::FORBIDDEN("User does not have the required role");
+                    \Util\HttpResponse::FORBIDDEN("User does not have the required role");
                 }
             } else {
-                HttpResponse::BAD_REQUEST("Missing or invalid data in the request body.");
+                \Util\HttpResponse::BAD_REQUEST("Missing or invalid data in the request body.");
             }
         } catch (Exception $e) {
-            HttpResponse::SERVER_ERROR($e->getMessage());
+            \Util\HttpResponse::SERVER_ERROR($e->getMessage());
         }
     }
 
@@ -145,12 +142,12 @@ class UserController {
             
             $token = $_SERVER['HTTP_AUTHORIZATION'];
 
-            if (!\Security\validateToken($token)) {
-                HttpResponse::UNAUTHORIZED("Invalid or expired token");
+            if (!SecurityToken::validateToken($token)) {
+                \Util\HttpResponse::UNAUTHORIZED("Invalid or expired token");
                 return;
             }
 
-            $tokenData = \Security\decodeToken($token);
+            $tokenData =SecurityToken::decodeToken($token);
 
             $loggedInUser = $tokenData['username'];
 
@@ -162,12 +159,12 @@ class UserController {
                     $result = $this->userService->deleteUser($loggedInUser);
     
                     if ($result) {
-                        HttpResponse::OK("User deleted successfully");
+                        \Util\HttpResponse::OK("User deleted successfully");
                     } else {
-                        HttpResponse::BAD_REQUEST("Failed to delete the user");
+                        \Util\HttpResponse::BAD_REQUEST("Failed to delete the user");
                     }
                 } else {
-                    HttpResponse::BAD_REQUEST("Missing or invalid data.");
+                    \Util\HttpResponse::BAD_REQUEST("Missing or invalid data.");
                 }
             } else if ($role === "admin") {
 
@@ -180,9 +177,9 @@ class UserController {
                     $result = $this->userService->deleteUser($userName);
         
                     if ($result) {
-                        HttpResponse::OK($result);
+                        \Util\HttpResponse::OK($result);
                     } else {
-                        HttpResponse::UNAUTHORIZED("Invalid credentials");
+                        \Util\HttpResponse::UNAUTHORIZED("Invalid credentials");
                     }
                 }
             } else  {
@@ -192,7 +189,7 @@ class UserController {
             }
        
         } catch (Exception $e) {
-            HttpResponse::SERVER_ERROR($e->getMessage());
+            \Util\HttpResponse::SERVER_ERROR($e->getMessage());
         }
     }
 
@@ -208,15 +205,15 @@ class UserController {
                 $token = $this->userService->authenticateUser($name, $password);
     
                 if ($token) {
-                    HttpResponse::OK(['token' => $token]);
+                    \Util\HttpResponse::OK(['token' => $token]);
                 } else {
-                    HttpResponse::UNAUTHORIZED("Invalid credentials");
+                    \Util\HttpResponse::UNAUTHORIZED("Invalid credentials");
                 }
             } else {
-                HttpResponse::BAD_REQUEST("Missing or invalid data in the request body.");
+                \Util\HttpResponse::BAD_REQUEST("Missing or invalid data in the request body.");
             }
         } catch (Exception $e) {
-            HttpResponse::SERVER_ERROR($e->getMessage());
+            \Util\HttpResponse::SERVER_ERROR($e->getMessage());
         }
     }
     
@@ -224,11 +221,11 @@ class UserController {
         try {   
             $token = $_SERVER['HTTP_AUTHORIZATION'];
     
-            if (!\Security\validateToken($token)) {
-                HttpResponse::UNAUTHORIZED("Invalid or expired token");
+            if (!SecurityToken::validateToken($token)) {
+                \Util\HttpResponse::UNAUTHORIZED("Invalid or expired token");
                 return;
             }
-            $tokenData = \Security\decodeToken($token);
+            $tokenData =SecurityToken::decodeToken($token);
     
             $role = $tokenData['role'];
 
@@ -237,10 +234,10 @@ class UserController {
             $response = [
                 'role' => $role 
             ];
-            HttpResponse::OK(json_encode($response));
+            \Util\HttpResponse::OK(json_encode($response));
     
         } catch (Exception $e) {
-            HttpResponse::SERVER_ERROR($e->getMessage());
+            \Util\HttpResponse::SERVER_ERROR($e->getMessage());
         }
     }
 
@@ -249,22 +246,22 @@ class UserController {
         try {
             $result = $this->userService->getAllUser();
              
-            HttpResponse::OK($result);
+            \Util\HttpResponse::OK($result);
 
         } catch (Exception $e) {
-            HttpResponse::SERVER_ERROR($e->getMessage());
+            \Util\HttpResponse::SERVER_ERROR($e->getMessage());
         }
     }
     
     public function updateUser() {
         $token = $_SERVER['HTTP_AUTHORIZATION'];
     
-        if (!\Security\validateToken($token)) {
-            HttpResponse::UNAUTHORIZED("Invalid or expired token");
+        if (!SecurityToken::validateToken($token)) {
+            \Util\HttpResponse::UNAUTHORIZED("Invalid or expired token");
             return;
         }
     
-        $tokenData = \Security\decodeToken($token);
+        $tokenData = SecurityToken::decodeToken($token);
         $userId = $tokenData['user_id'];
         $role = $tokenData['role'];
     
@@ -279,21 +276,21 @@ class UserController {
             $removingBlanksName = trim($userName);
     
             if (empty($removingBlanksPassword) || empty($removingBlanksName)) {
-                HttpResponse::BAD_REQUEST("Fill in the correct values.");
+                \Util\HttpResponse::BAD_REQUEST("Fill in the correct values.");
                 return;
             }
     
             $result = $this->userService->updateUser($userId, $userName, $role, $password);
     
             if ($result) {
-                HttpResponse::OK("User updated successfully");
+                \Util\HttpResponse::OK("User updated successfully");
                 return;
             } else {
-                HttpResponse::BAD_REQUEST("Failed to update the user");
+                \Util\HttpResponse::BAD_REQUEST("Failed to update the user");
                 return;
             }
         } else {
-            HttpResponse::BAD_REQUEST("Missing or invalid data in the request body.");
+            \Util\HttpResponse::BAD_REQUEST("Missing or invalid data in the request body.");
             return;
         }
     }
@@ -302,19 +299,19 @@ class UserController {
         try {
             $token = $_SERVER['HTTP_AUTHORIZATION'];
     
-            if (!\Security\validateToken($token)) {
-                HttpResponse::UNAUTHORIZED("Invalid or expired token");
+            if (!SecurityToken::validateToken($token)) {
+                \Util\HttpResponse::UNAUTHORIZED("Invalid or expired token");
                 return;
             }
         
-            $tokenData = \Security\decodeToken($token);
+            $tokenData = SecurityToken::decodeToken($token);
             $userId = $tokenData['user_id'];
             $result = $this->userService->getIdUser($userId);
              
-            HttpResponse::OK($result);
+            \Util\HttpResponse::OK($result);
 
         } catch (Exception $e) {
-            HttpResponse::SERVER_ERROR($e->getMessage());
+            \Util\HttpResponse::SERVER_ERROR($e->getMessage());
         }
     }
 }
